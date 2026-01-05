@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Core Lab - Leistungen</title>
+  <style>
+    :root {
+      --color-primary: #0e7490;
+      --color-secondary: #06b6d4;
+      --color-accent: #dc2626;
+      --color-bg: #ecfeff;
+      --color-text: #164e63;
+      --color-white: #ffffff;
+      --font-heading: 'Archivo Black', sans-serif;
+      --font-body: 'Work Sans', sans-serif;
+      --border-radius: 24px;
+      --transition-fast: 0.2s ease;
+      --transition-smooth: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      --shadow-card: 0 10px 40px rgba(14, 116, 144, 0.1);
+      --shadow-hover: 0 20px 50px rgba(14, 116, 144, 0.2);
+      --shadow-glow: 0 0 20px rgba(14, 116, 144, 0.4);
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Archivo+Black:wght@400;600;700&family=Work+Sans:wght@300;400;500;600&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-heading);
+      line-height: 1.1;
+      color: var(--color-primary);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition-fast);
+    }
+
+    img, svg {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .cards-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+    }
+
+    .cards-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+      color: var(--color-white);
+      box-shadow: 0 4px 15px rgba(14, 116, 144, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-glow);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4); }
+      70% { box-shadow: 0 0 0 15px rgba(6, 182, 212, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .main-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 1.5rem 0;
+      background: rgba(236, 254, 255, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(14, 116, 144, 0.1);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-text);
+      letter-spacing: -0.5px;
+    }
+
+    .logo .highlight {
+      color: var(--color-secondary);
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2.5rem;
+    }
+
+    .nav-links a {
+      font-family: var(--font-body);
+      font-weight: 500;
+      color: var(--color-text);
+      font-size: 0.95rem;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background-color: var(--color-secondary);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--color-primary);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-toggle, .nav-toggle-label {
+      display: none;
+    }
+
+    @media (max-width: 968px) {
+      .nav-menu {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(236, 254, 255, 0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        justify-content: center;
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        z-index: 999;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .nav-links a {
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      .nav-toggle {
+        display: none;
+      }
+
+      .nav-toggle-label {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        cursor: pointer;
+        z-index: 1001;
+        width: 30px;
+      }
+
+      .nav-toggle-label span {
+        display: block;
+        width: 100%;
+        height: 2px;
+        background-color: var(--color-primary);
+        transition: all 0.3s ease;
+      }
+
+      .nav-toggle:checked ~ .nav-menu {
+        transform: translateX(0);
+      }
+
+      .nav-toggle:checked ~ .nav-toggle-label span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 6px);
+      }
+
+      .nav-toggle:checked ~ .nav-toggle-label span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .nav-toggle:checked ~ .nav-toggle-label span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -6px);
+      }
+    }
+
+    .main-footer {
+      background: linear-gradient(180deg, var(--color-primary) 0%, #000000 100%);
+      color: var(--color-white);
+      padding: 5rem 0 2rem;
+      margin-top: 5rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 4rem;
+      margin-bottom: 4rem;
+    }
+
+    .footer-logo {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(to right, #fff, var(--color-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .footer-desc {
+      opacity: 0.8;
+      max-width: 300px;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-email {
+      font-weight: 600;
+      color: var(--color-secondary);
+    }
+
+    .footer-nav h4, .footer-legal h4 {
+      font-family: var(--font-heading);
+      margin-bottom: 1.5rem;
+      color: var(--color-secondary);
+    }
+
+    .footer-nav ul, .footer-legal ul {
+      list-style: none;
+    }
+
+    .footer-nav li, .footer-legal li {
+      margin-bottom: 0.8rem;
+    }
+
+    .footer-nav a, .footer-legal a {
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+
+    .footer-nav a:hover, .footer-legal a:hover {
+      opacity: 1;
+      color: var(--color-secondary);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      opacity: 0.5;
+    }
+
+    @media (max-width: 768px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    .service-card {
+      background: var(--color-white);
+      padding: 3rem 2rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-card);
+      transition: var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .service-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .icon-container {
+      width: 60px;
+      height: 60px;
+      min-height: 60px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2rem;
+      color: white;
+      font-size: 1.8rem;
+      box-shadow: 0 8px 20px rgba(6, 182, 212, 0.3);
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--color-text);
+    }
+
+    .card-desc {
+      color: var(--color-text);
+      opacity: 0.75;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    .content-section {
+      padding: 8rem 0;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 5rem auto;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 1rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-subtitle {
+      font-size: 1.125rem;
+      color: var(--color-text);
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVIGATION (PFLICHT - von unten kopieren) -->
+  <nav class="main-nav">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        CORE <span class="highlight">LAB</span>
+      </a>
+
+      <!-- Mobile Toggle Checkbox -->
+      <input type="checkbox" id="nav-toggle" class="nav-toggle">
+      <label for="nav-toggle" class="nav-toggle-label">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
+
+      <div class="nav-menu">
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="ueber-uns.html">Über Uns</a></li>
+          <li><a href="leistungen.html">Leistungen</a></li>
+          <li><a href="kontakt.html">Kontakt</a></li>
+        </ul>
+        <a href="kontakt.html" class="btn btn-primary nav-cta">Starten</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <section class="content-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Unsere Leistungen</h2>
+        <p class="section-subtitle">Qualität und Service, die überzeugen.</p>
+      </div>
+      <div class="section-content">
+        <div class="cards-grid">
+          <article class="service-card">
+            <div class="icon-container">🚀</div>
+            <h3 class="card-title">Netzwerkoptimierung</h3>
+            <p class="card-desc">Unsere Experten analysieren und optimieren Ihr bestehendes Netzwerk, um die Leistung zu maximieren und Engpässe zu beseitigen. Dies führt zu einer schnelleren und zuverlässigeren Verbindung für Ihr Unternehmen.</p>
+          </article>
+          <article class="service-card">
+            <div class="icon-container">🔒</div>
+            <h3 class="card-title">IT-Sicherheit</h3>
+            <p class="card-desc">Wir bieten umfassende Sicherheitslösungen, um Ihre Daten vor Cyber-Bedrohungen zu schützen. Unsere Maßnahmen gewährleisten den Schutz Ihrer sensiblen Informationen und die Sicherheit Ihrer IT-Infrastruktur.</p>
+          </article>
+          <article class="service-card">
+            <div class="icon-container">☁️</div>
+            <h3 class="card-title">Cloud-Services</h3>
+            <p class="card-desc">Mit unseren Cloud-Lösungen können Sie flexibel und sicher auf Ihre Daten zugreifen. Wir unterstützen Sie bei der Migration und Verwaltung Ihrer Cloud-Umgebung, um die Effizienz zu steigern.</p>
+          </article>
+          <article class="service-card">
+            <div class="icon-container">🛠️</div>
+            <h3 class="card-title">Technischer Support</h3>
+            <p class="card-desc">Unser technischer Support steht Ihnen rund um die Uhr zur Verfügung, um Probleme schnell zu lösen. Wir bieten Ihnen die Unterstützung, die Sie benötigen, um Ihre Systeme reibungslos am Laufen zu halten.</p>
+          </article>
+          <article class="service-card">
+            <div class="icon-container">📊</div>
+            <h3 class="card-title">Datenanalyse</h3>
+            <p class="card-desc">Nutzen Sie Ihre Daten optimal mit unseren Analyse-Services. Wir helfen Ihnen, wertvolle Einblicke zu gewinnen und datenbasierte Entscheidungen zu treffen, die Ihr Geschäft voranbringen.</p>
+          </article>
+          <article class="service-card">
+            <div class="icon-container">🔧</div>
+            <h3 class="card-title">Hardware-Management</h3>
+            <p class="card-desc">Wir kümmern uns um die Beschaffung, Installation und Wartung Ihrer Hardware. Unsere Lösungen sind darauf ausgelegt, die Lebensdauer Ihrer Geräte zu verlängern und die Betriebskosten zu senken.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Lassen Sie uns sprechen</h2>
+      </div>
+      <div class="section-content">
+        <a href="kontakt.html" class="btn btn-primary">Kontaktieren Sie uns</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER (PFLICHT - von unten kopieren) -->
+  <footer class="main-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">Core Lab</div>
+          <p class="footer-desc">Premium IT-Infrastruktur und Netzwerklösungen für moderne Unternehmen.</p>
+          <p class="footer-email">info@corelab.de</p>
+        </div>
+        
+        <div class="footer-nav">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="ueber-uns.html">Über Uns</a></li>
+            <li><a href="leistungen.html">Leistungen</a></li>
+            <li><a href="kontakt.html">Kontakt</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-legal">
+          <h4>Rechtliches</h4>
+          <ul>
+            <li><a href="impressum.html">Impressum</a></li>
+            <li><a href="datenschutz.html">Datenschutz</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2023 Core Lab. Alle Rechte vorbehalten.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
